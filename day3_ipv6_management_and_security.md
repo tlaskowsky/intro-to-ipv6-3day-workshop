@@ -83,7 +83,28 @@ Why do we need a formal IP Address Management (IPAM) strategy for IPv6 when addr
     * **Subnet Allocation:** Divide site prefixes into `/64` prefixes for individual VLANs/LAN segments. **Always use /64 for end-user subnets.**
     * **Interface ID:** Last 64 bits assigned via SLAAC, DHCPv6, or statically.
 
-[DIAGRAM PLACEHOLDER: Tree diagram showing /48 -> /56 (Sites) -> /64 (Subnets)]
+
+```graphviz
+digraph IPAM_Hierarchy {
+    rankdir=TD;
+    node [shape=box, style=rounded, fontname="Helvetica", fontsize=10];
+
+    Org [label="Org Prefix\n(e.g., /48 from ISP/RIR)"];
+    SiteA [label="Site A\n(e.g., /56)"];
+    SiteB [label="Site B\n(e.g., /56)"];
+    SubnetA1 [label="LAN A1\n(e.g., /64)"];
+    SubnetA2 [label="LAN A2\n(e.g., /64)"];
+    SubnetB1 [label="LAN B1\n(e.g., /64)"];
+    SubnetB2 [label="LAN B2\n(e.g., /64)"];
+
+    Org -> SiteA [label=" Allocate "];
+    Org -> SiteB [label=" Allocate "];
+    SiteA -> SubnetA1 [label=" Subnet "];
+    SiteA -> SubnetA2 [label=" Subnet "];
+    SiteB -> SubnetB1 [label=" Subnet "];
+    SiteB -> SubnetB2 [label=" Subnet "];
+}
+```
 
 <aside class="notes">
 The standard approach is hierarchical. You start with the large block assigned to your organization by your ISP or RIR – commonly a /48 or /56. You then carve that up logically. Assign slightly smaller blocks (like /56s or /60s) to major physical locations (HQ, Data Center, Branch Office) or significant logical zones (Production, Dev, DMZ). Within each site/zone prefix, you then allocate /64 prefixes for each individual network segment or VLAN. It is crucial to stick to /64 for end-user subnets, as many IPv6 features like SLAAC depend on it. The final 64 bits, the Interface ID, are then assigned to hosts within that /64 subnet using methods like SLAAC, DHCPv6, or static configuration.
@@ -317,7 +338,6 @@ When managing DNS in a dual-stack world, ensure your recursive DNS resolvers (th
 Quick recap on address assignment management. SLAAC is the simplest – hosts listen to RAs and configure their own address using the advertised prefix and a self-generated IID. However, SLAAC alone doesn't traditionally provide DNS server info (though the RDNSS option in RAs can). Stateful DHCPv6 works like IPv4 DHCP, with a server assigning specific addresses and options, giving you tight control but requiring server infrastructure. Stateless DHCPv6 is a hybrid: the host gets its address via SLAAC but contacts a DHCPv6 server just to get other options like DNS servers. The choice depends on the RA flags set by the router: M=1 means use stateful DHCPv6 for addresses; O=1 means use stateless DHCPv6 for options (used with or without M=1); if both are 0, use only SLAAC (and maybe RDNSS). Managing these RA flags correctly across your routers is key.
 </aside>
 
----
 ---
 
 ## Module 10: IPv6 Security
