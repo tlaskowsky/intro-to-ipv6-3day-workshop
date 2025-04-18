@@ -22,7 +22,6 @@ Welcome everyone to Day 1 of our Introduction to IPv6 workshop. Over the next th
 
 ---
 
----
 
 ## Module 0: IPv4 Concepts Review (Refresher)
 
@@ -265,7 +264,6 @@ So, to recap IPv4: 32-bit addresses, NAT needed for private space, ARP/DHCP for 
 
 ---
 
----
 
 ## Module 1: Introduction to IPv6
 
@@ -364,7 +362,6 @@ IPv6 isn't exactly new. Its development started back in the early 1990s when the
 
 ---
 
----
 
 ## Module 2: Understanding IPv6 Addressing (Part 1)
 
@@ -607,7 +604,6 @@ How did everyone do? Any questions on those concepts before we explore the lab e
 </aside>
 
 ---
----
 
 ### Lab 1: Exploring the Pre-Deployed AWS Environment
 
@@ -617,13 +613,11 @@ Now it's time for our first lab (~2 hours). We'll log into the AWS accounts prep
 
 ---
 
----
 
 ### LUNCH BREAK (1 Hour)
 
 ---
 
----
 
 ## Module 2: Understanding IPv6 Addressing (Part 2)
 
@@ -728,7 +722,6 @@ IPv6 uses prefix length notation (`/nn`) like CIDR. `/64` is standard for LAN su
 
 ---
 
----
 
 ## Module 3: IPv6 Protocol Basics
 
@@ -872,7 +865,6 @@ Any questions arising from the quiz or the material we just covered?
 </aside>
 
 ---
----
 
 ### Lab 2: Basic IPv6 Connectivity and Packet Analysis
 
@@ -880,7 +872,6 @@ Any questions arising from the quiz or the material we just covered?
 Alright, let's get back to the hands-on labs (~3 hours). In Lab 2, we'll connect to the EC2 instances again, practice pinging using different IPv6 address types, and use `tcpdump` to capture and examine the IPv6 and ICMPv6 headers based on what we just learned. Please turn to Lab 2 in your lab guide.
 </aside>
 
----
 ---
 
 ### Day 1 Wrap-up
@@ -913,7 +904,6 @@ Welcome everyone to Day 1 of our Introduction to IPv6 workshop. Over the next th
 
 ---
 
----
 
 ## Module 0: IPv4 Concepts Review (Refresher)
 
@@ -1156,7 +1146,6 @@ So, to recap IPv4: 32-bit addresses, NAT needed for private space, ARP/DHCP for 
 
 ---
 
----
 
 ## Module 1: Introduction to IPv6
 
@@ -1255,7 +1244,6 @@ IPv6 isn't exactly new. Its development started back in the early 1990s when the
 
 ---
 
----
 
 ## Module 2: Understanding IPv6 Addressing (Part 1)
 
@@ -1498,7 +1486,6 @@ How did everyone do? Any questions on those concepts before we explore the lab e
 </aside>
 
 ---
----
 
 ### Lab 1: Exploring the Pre-Deployed AWS Environment
 
@@ -1508,13 +1495,11 @@ Now it's time for our first lab (~2 hours). We'll log into the AWS accounts prep
 
 ---
 
----
 
 ### LUNCH BREAK (1 Hour)
 
 ---
 
----
 
 ## Module 2: Understanding IPv6 Addressing (Part 2)
 
@@ -1619,7 +1604,6 @@ IPv6 uses prefix length notation (`/nn`) like CIDR. `/64` is standard for LAN su
 
 ---
 
----
 
 ## Module 3: IPv6 Protocol Basics
 
@@ -1763,7 +1747,6 @@ Any questions arising from the quiz or the material we just covered?
 </aside>
 
 ---
----
 
 ### Lab 2: Basic IPv6 Connectivity and Packet Analysis
 
@@ -1771,7 +1754,6 @@ Any questions arising from the quiz or the material we just covered?
 Alright, let's get back to the hands-on labs (~3 hours). In Lab 2, we'll connect to the EC2 instances again, practice pinging using different IPv6 address types, and use `tcpdump` to capture and examine the IPv6 and ICMPv6 headers based on what we just learned. Please turn to Lab 2 in your lab guide.
 </aside>
 
----
 ---
 
 ### Day 1 Wrap-up
