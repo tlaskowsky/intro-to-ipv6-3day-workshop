@@ -50,7 +50,6 @@ Let's quickly recap Day 1. We covered the core IPv6 fundamentals, addressing, pr
 </aside>
 
 ---
----
 
 ## Module 4: Dual-Stack Deep Dive
 
@@ -80,7 +79,15 @@ Just to refresh, the three main ways networks handle the transition are Dual-Sta
 * Each interface typically has both an IPv4 address and one or more IPv6 addresses (LLA + GUA/ULA).
 * Applications can use either protocol stack based on destination address resolution and system preference.
 
-[DIAGRAM PLACEHOLDER: Node with separate IPv4 and IPv6 stacks]
+```graphviz
+digraph DualStackNode {
+    rankdir=TB;
+    node [shape=record, fontname="Helvetica", fontsize=10, style=filled, fillcolor=beige];
+    Host [label="{ {<iface> Interface} | Host/Router | { <ipv4> IPv4 Stack | <ipv6> IPv6 Stack } }"];
+    Net [label="Network", shape=cloud, style=filled, fillcolor=lightblue]
+    Host:iface -> Net [dir=both]; // Show connection to network
+}
+```
 
 <aside class="notes">
 What does Dual-Stack mean in practice? It means your network infrastructure components (like routers and firewalls) and your end devices (servers, laptops) are configured to understand and process both IPv4 and IPv6 traffic at the same time. They essentially have two independent network stacks running. An interface on a dual-stack device will typically have at least one IPv4 address and at least two IPv6 addresses (a Link-Local Address, plus usually a Global Unicast Address or Unique Local Address). The operating system and applications decide which protocol to use for a given connection, usually based on DNS results and system preferences (most modern OSes prefer IPv6 if available).
@@ -169,7 +176,6 @@ Any questions about Dual-Stack before we start Lab 3?
 </aside>
 
 ---
----
 
 ### Lab 3: Ingress Connectivity to IPv6-only Instance via NLB
 
@@ -180,11 +186,9 @@ Alright, time for Lab 3. In this lab, you'll configure a Network Load Balancer (
 </aside>
 
 ---
----
 
 ### LUNCH BREAK (1 Hour)
 
----
 ---
 
 ## Module 5: Tunneling Deep Dive
@@ -204,7 +208,15 @@ Welcome back. Before our afternoon lab, we'll explore the second major migration
     * Often, a **tunneling protocol header** (like GRE) sits between the outer IPv4 and inner IPv6 headers.
 * The entire encapsulated packet travels across the IPv4 network based on the outer IPv4 header.
 
-[DIAGRAM PLACEHOLDER: IPv6 packet inside IPv4 packet (with optional GRE header)]
+```graphviz
+digraph Tunneling {
+    rankdir=LR;
+    node [shape=record, fontname="Courier", fontsize=9, style=filled];
+    packet [label="{ <o> Outer IPv4 Hdr | { <t> Tunnel Hdr (e.g. GRE) | { <i_h> Inner IPv6 Hdr | <i_p> IPv6 Payload } } }", fillcolor=lightyellow];
+    label="IPv6-in-IPv4 Encapsulation";
+    fontsize=10;
+}
+```
 
 <aside class="notes">
 What is tunneling? It's essentially wrapping one type of packet inside another. In our context, it usually means taking a complete IPv6 packet and putting it inside the data payload of an IPv4 packet. This allows the IPv6 packet to travel across network segments that only understand IPv4. Think of it like putting a letter (IPv6 packet) inside a standard envelope (IPv4 packet) with a standard address to get it through the regular postal system (IPv4 network). At the destination, the envelope is removed, revealing the original letter. An intermediate tunneling protocol header, like GRE, is often used between the outer IPv4 and inner IPv6 headers to provide information for the tunnel endpoints.
@@ -285,7 +297,6 @@ While tunneling works, there are trade-offs. The extra headers add overhead. Mor
 </aside>
 
 ---
----
 
 ## Module 6: Translation Deep Dive (NAT64/DNS64)
 
@@ -315,7 +326,25 @@ Translation is needed when you have endpoints that only speak one protocol needi
 * **NAT64 Gateway:** Translates IPv6 packet -> IPv4 packet (statefully).
 * **Setup in Lab 2:** You configured the routing (`64:ff9b::/96 -> NGW`) for the IPv6-only subnets in the Service Provider VPC. AWS DNS handled DNS64.
 
-[DIAGRAM PLACEHOLDER: Simple DNS64 -> Client -> NAT64 -> IPv4 Server flow]
+```graphviz
+digraph NAT64_DNS64_Flow {
+    rankdir=TB;
+    node [shape=box, style=rounded, fontname="Helvetica", fontsize=10];
+    edge [fontsize=9];
+
+    Client [label="IPv6-only Client"];
+    DNS64 [label="DNS64 Server\n(e.g., AWS Resolver)"];
+    NAT64 [label="NAT64 Gateway\n(e.g., AWS NGW)"];
+    Server [label="IPv4-only Server"];
+
+    Client -> DNS64 [label="1. Query AAAA for ipv4-only.com?"];
+    DNS64 -> Client [label="2. Reply AAAA 64:ff9b::[v4_IP] (Synthesized)"];
+    Client -> NAT64 [label="3. Send IPv6 Pkt to 64:ff9b::[v4_IP]"];
+    NAT64 -> Server [label="4. Translate & Send IPv4 Pkt to [v4_IP]"];
+    Server -> NAT64 [label="5. Reply IPv4 Pkt"];
+    NAT64 -> Client [label="6. Translate & Send IPv6 Pkt"];
+}
+```
 
 <aside class="notes">
 Quick refresher from yesterday and the detailed slide: DNS64 creates a 'fake' IPv6 address embedding the real IPv4 address when an IPv6-only client queries DNS for an IPv4-only host. The client sends traffic to this fake IPv6 address. Your routing setup directs this specific traffic (destined for the `64:ff9b::/96` prefix) to the NAT Gateway. The NAT Gateway performs the stateful translation from IPv6 to IPv4 and sends it on. You set up the routing part of this in Lab 2 for the Service Provider VPC's IPv6-only subnets.
@@ -378,7 +407,6 @@ Any questions on Tunneling or Translation before we start the afternoon lab?
 </aside>
 
 ---
----
 
 ### Lab 4: Public Dual-Stack Configuration & Testing (Challenge Lab)
 
@@ -388,7 +416,6 @@ Any questions on Tunneling or Translation before we start the afternoon lab?
 For our final lab today, Lab 4, you'll configure public dual-stack subnets and instances within the Service Provider VPC. This will likely be presented as more of a challenge lab, providing objectives and high-level guidance rather than detailed click-by-click instructions, encouraging you to apply what you've learned about subnets, routing tables, IGW, and instance configuration for both IPv4 and IPv6. Refer to your Lab Guide for the specific scenario and tasks.
 </aside>
 
----
 ---
 
 ### Day 2 Wrap-up
